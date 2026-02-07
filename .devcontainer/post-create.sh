@@ -21,6 +21,14 @@ until mysqladmin ping -h mysql -u root -proot --silent; do
   sleep 2
 done
 
-mysql -h mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS lostcity_markets;"
+mysql -h mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS lostcity_market;"
 
-php artisan migrate:fresh --seed
+
+TABLE_COUNT=$(mysql -h mysql -u root -proot -N -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='lostcity_market';")
+
+if [ "$TABLE_COUNT" -eq 0 ]; then
+  echo "Database is empty. Running migrations and seeders..."
+  php artisan migrate:fresh --seed
+else
+  echo "Database already initialized. Skipping migrations."
+fi

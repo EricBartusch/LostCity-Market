@@ -8,6 +8,11 @@ import components from "unplugin-vue-components/vite"
 
 export default defineConfig(({ isSsrBuild }) => {
   return {
+    server: {
+      host: "127.0.0.1",
+      port: 5173,
+      strictPort: true,
+    },
     resolve: {
       alias: {
         "@": "/resources",
